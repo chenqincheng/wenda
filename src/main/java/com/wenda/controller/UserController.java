@@ -44,7 +44,7 @@ public class UserController {
             cookie.setPath("/");
             response.addCookie(cookie);
         }
-        return "index";
+        return "redirect:/";
     }
 
     @RequestMapping(value = "/register",method = RequestMethod.GET)

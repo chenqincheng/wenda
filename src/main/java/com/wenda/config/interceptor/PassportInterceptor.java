@@ -43,7 +43,8 @@ public class PassportInterceptor implements HandlerInterceptor {
         if (token != null){
             Token currentToken = tokenMapper.selectByToken(token);
             if (currentToken == null || currentToken.getExpired().before(new Date()) || currentToken.getStatus() != 1){
-                User user = userMapper.selectByPrimaryKey(currentToken.getId());
+                User user = userMapper.selectByPrimaryKey(currentToken.getUserId());
+                System.out.println(user.getName());
                 currentUser.setUser(user);
                 return true;
             }
@@ -55,6 +56,7 @@ public class PassportInterceptor implements HandlerInterceptor {
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
         if (modelAndView != null){
             modelAndView.addObject("user",currentUser.getUser());
+
         }
     }
 
