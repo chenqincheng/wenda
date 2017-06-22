@@ -1,19 +1,22 @@
 package com.wenda.controller;
 
 import com.wenda.common.CurrentUser;
-import com.wenda.common.JsonResponse;
+import com.wenda.common.EntityType;
+import com.wenda.common.JSONResponse;
+import com.wenda.common.ViewObject;
+import com.wenda.pojo.Comment;
 import com.wenda.pojo.Question;
 import com.wenda.pojo.User;
+import com.wenda.service.ICommentService;
 import com.wenda.service.IQuestionService;
+import com.wenda.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 
-import java.util.Date;
+import java.util.*;
 
 /**
  * Created by chen on 2017/6/11.
@@ -25,11 +28,18 @@ public class QuestionController {
     private IQuestionService iQuestionService;
 
     @Autowired
-    CurrentUser currentUser;
+    private  CurrentUser currentUser;
+
+    @Autowired
+    private ICommentService iCommentService;
+
+    @Autowired
+    private IUserService iUserService;
+
 
     @RequestMapping(value = "/add",method = RequestMethod.POST)
     @ResponseBody
-    public JsonResponse add(@RequestParam("title") String title, @RequestParam("content") String content){
+    public JSONResponse add(@RequestParam("title") String title, @RequestParam("content") String content){
         try{
             //TODO 验证数据 比如：用户是否登录
             Question question = new Question();
@@ -39,12 +49,38 @@ public class QuestionController {
             question.setCreatedTime(new Date());
             question.setUserId(currentUser.getUser().getId());
 
-            JsonResponse<String> response =  iQuestionService.addQueston(question);
-
+            JSONResponse response =  iQuestionService.addQueston(question);
             return  response;
         }catch (Exception e){
             System.out.println();
         }
-        return JsonResponse.returnErrorMessage("参数有误！");
+        return JSONResponse.returnErrorMessage("参数有误！");
+    }
+
+    @RequestMapping(path = "/{questionId}",method = RequestMethod.GET)
+    public String showQuestionPage(Model model, @PathVariable(value = "questionId") Integer questionId){
+       //获取问题实体
+        Question question = iQuestionService.selectQuestionByQuestionId(questionId);
+        if (question == null){
+            model.addAttribute("msg","问题不存在！");
+            return "404";
+        }
+        //获取问题的回答
+        List<Comment> commentList = iCommentService.getAllCommentByEntity(questionId,EntityType.COMMENT);
+
+        List<ViewObject> comments = new ArrayList<ViewObject>();
+
+        for (Comment comment :commentList){
+            ViewObject vo = new ViewObject();
+            User user = iUserService.selectUserByUserId(comment.getUserId());
+            vo.set("comment",comment);
+            vo.set("user",user);
+            comments.add(vo);
+        }
+
+        model.addAttribute("comments",comments);
+        model.addAttribute(question);
+
+        return "detail";
     }
 }

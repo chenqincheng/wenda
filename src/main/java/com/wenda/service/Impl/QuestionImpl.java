@@ -1,6 +1,7 @@
 package com.wenda.service.Impl;
 
-import com.wenda.common.JsonResponse;
+import com.wenda.common.CurrentUser;
+import com.wenda.common.JSONResponse;
 import com.wenda.dao.QuestionMapper;
 import com.wenda.pojo.Question;
 import com.wenda.service.IQuestionService;
@@ -15,12 +16,18 @@ public class QuestionImpl implements IQuestionService {
     @Autowired
     QuestionMapper questionMapper;
 
+
     @Override
-    public JsonResponse<String> addQueston(Question question) {
+    public JSONResponse<String> addQueston(Question question) {
         int resultCount = questionMapper.insert(question);
         if (resultCount>0){
-            return JsonResponse.returnSuccessMessage("添加问题成功！");
+            return JSONResponse.returnSuccessMessage("添加问题成功！");
         }
-        return JsonResponse.returnErrorMessage("添加问题失败！");
+        return JSONResponse.returnErrorMessage("添加问题失败！");
+    }
+
+    @Override
+    public Question selectQuestionByQuestionId(Integer questionId) {
+        return questionMapper.selectByPrimaryKey(questionId);
     }
 }

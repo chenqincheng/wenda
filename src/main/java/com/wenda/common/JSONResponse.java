@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * Created by chen on 2017/6/12.
  */
-public class JsonResponse<T> implements Serializable {
+public class JSONResponse<T> implements Serializable {
 
     @JSONField(ordinal = 1)
     private int status;
@@ -36,12 +36,12 @@ public class JsonResponse<T> implements Serializable {
      * @param message
      */
 
-    private JsonResponse(int status, String message){
+    private JSONResponse(int status, String message){
         this.status = status;
         this.message = message;
     }
 
-    private JsonResponse(int status,T data){
+    private JSONResponse(int status, T data){
         this.status = status;
         this.data = data;
     }
@@ -52,26 +52,26 @@ public class JsonResponse<T> implements Serializable {
      * @param message
      * @param data
      */
-    private JsonResponse(int status,String message,T data){
+    private JSONResponse(int status, String message, T data){
         this.status = status;
         this.message = message;
         this.data = data;
     }
 
-    public static <T> JsonResponse<T> returnSuccessMessage(String message){
-        return new JsonResponse<T>(0,message);
+    public static <T> JSONResponse<T> returnSuccessMessage(String message){
+        return new JSONResponse<T>(0,message);
     }
 
-    public static <T> JsonResponse<T> returnSuccessMessageWithDate(String message,T data){
-        return new JsonResponse<T>(0,message,data);
+    public static <T> JSONResponse<T> returnSuccessMessageWithDate(String message, T data){
+        return new JSONResponse<T>(0,message,data);
     }
 
-    public static <T> JsonResponse <T> returnErrorMessage(String message){
-        return new JsonResponse<T>(1,message);
+    public static <T> JSONResponse<T> returnErrorMessage(String message){
+        return new JSONResponse<T>(1,message);
     }
 
-    public static <T> JsonResponse<T> returnErrorMessageWithData(String message,T data){
-        return new JsonResponse<T>(1,message,data);
+    public static <T> JSONResponse<T> returnErrorMessageWithData(String message, T data){
+        return new JSONResponse<T>(1,message,data);
     }
 
 

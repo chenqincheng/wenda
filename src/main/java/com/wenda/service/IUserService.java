@@ -10,4 +10,6 @@ import java.util.Map;
 public interface IUserService {
     Map<String,String> register(User user);
     Map<String,String> login(String name,String password);
+
+    User selectUserByUserId(Integer userId);
 }

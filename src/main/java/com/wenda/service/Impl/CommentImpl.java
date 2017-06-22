@@ -16,7 +16,8 @@ public class CommentImpl implements ICommentService {
     @Autowired
     CommentMapper commentMapper;
     @Override
-    public List<Comment> getCommentByEntity(int entityId,int entityType) {
-        return null;
+    public List<Comment> getAllCommentByEntity(int entityId, int entityType) {
+        List<Comment> list = commentMapper.seletAllCommentByEntity(entityId,entityType);
+        return list;
     }
 }

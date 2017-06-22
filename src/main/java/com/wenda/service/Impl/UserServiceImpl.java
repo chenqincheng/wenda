@@ -69,6 +69,12 @@ public class UserServiceImpl implements IUserService {
         return map;
     }
 
+    @Override
+    public User selectUserByUserId(Integer userId) {
+        User user = userMapper.selectByPrimaryKey(userId);
+        return user;
+    }
+
     /*
     * 数据验证
     * data：数据
