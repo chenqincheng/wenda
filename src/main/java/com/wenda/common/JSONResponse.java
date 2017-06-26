@@ -62,6 +62,10 @@ public class JSONResponse<T> implements Serializable {
         return new JSONResponse<T>(0,message);
     }
 
+    public static <T> JSONResponse<T> returnStatusAndMessage(int status,String message){
+        return new JSONResponse<T>(status,message);
+    }
+
     public static <T> JSONResponse<T> returnSuccessMessageWithDate(String message, T data){
         return new JSONResponse<T>(0,message,data);
     }

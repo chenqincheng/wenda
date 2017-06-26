@@ -117,4 +117,12 @@
     FROM user WHERE name = #{name} and password = #{password}
   </select>
 
+
+  <select id="selectByName" resultMap="BaseResultMap" parameterType="String" >
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where name = #{name}
+  </select>
+
 </mapper>

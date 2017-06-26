@@ -71,8 +71,12 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public User selectUserByUserId(Integer userId) {
-        User user = userMapper.selectByPrimaryKey(userId);
-        return user;
+        return userMapper.selectByPrimaryKey(userId);
+    }
+
+    @Override
+    public User selectUserByName(String name) {
+        return userMapper.selectByName(name);
     }
 
     /*

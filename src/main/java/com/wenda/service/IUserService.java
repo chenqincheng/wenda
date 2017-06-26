@@ -12,4 +12,6 @@ public interface IUserService {
     Map<String,String> login(String name,String password);
 
     User selectUserByUserId(Integer userId);
+
+    User selectUserByName(String name);
 }
