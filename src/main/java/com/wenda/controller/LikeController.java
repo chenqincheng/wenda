@@ -1,8 +1,5 @@
 package com.wenda.controller;
 
-import com.wenda.async.EventModel;
-import com.wenda.async.EventProducer;
-import com.wenda.async.EventType;
 import com.wenda.common.CurrentUser;
 import com.wenda.common.EntityType;
 import com.wenda.common.JSONResponse;
@@ -25,8 +22,6 @@ public class LikeController {
     @Autowired
     private CurrentUser currentUser;
 
-    @Autowired
-    private EventProducer eventProducer;
 
     @RequestMapping(path = "/like",method = RequestMethod.POST)
     @ResponseBody
@@ -34,15 +29,7 @@ public class LikeController {
         if (currentUser.getUser() == null){
             return JSONResponse.returnStatusAndMessage(999,"用户未登录");
         }
-
-        //异步事件
-        eventProducer.sentEvent(new EventModel(EventType.LIKE)
-                        .setActorId(currentUser.getUser().getId())
-                        .setEntityId(EntityType.COMMENT)
-        );
-
         long likeCount = iLikeService.like(currentUser.getUser().getId(), EntityType.COMMENT,commentId);
-
         return JSONResponse.returnStatusAndMessage(0,String.valueOf(likeCount));
     }
 
